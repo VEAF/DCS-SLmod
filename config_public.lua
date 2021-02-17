@@ -74,38 +74,39 @@ time by a server admin by using the "-admin toggle stats" option in the Admin me
 ]]
 enable_slmod_stats = true
 	
-	--[[Enables mission-specific stats. The mission-specific stats may be written to a file and/or displayed in the in-game
-	stats menu.]]
-	enable_mission_stats = true
-	
-		--[[If mission-specific stats are enabled, then set this variable to true to save these mission stats to a file.  By default, 
-		these files are located in Saved Games/DCS/Slmod/Mission Stats.]]
-		write_mission_stats_files = true
-		
-		--[[If you don't want mission stats files saving in Saved Games/DCS/Slmod/Mission Stats, then specify an alternate file 
-		directory here.]]
-		mission_stats_files_dir = nil
+--[[Enables mission-specific stats. The mission-specific stats may be written to a file and/or displayed in the in-game
+stats menu.]]
+enable_mission_stats = true
 
-	--[[In order for the host computer to get credit in the SlmodStats system, you must enter the UCID of the host computer below.
-	The UCID must be in quotes, like this: 
-	host_ucid = "a29fb043d814a012452f043dc"
-	]]
-	host_ucid = nil
+--[[If mission-specific stats are enabled, then set this variable to true to save these mission stats to a file.  By default, 
+these files are located in Saved Games/DCS/Slmod/Mission Stats.]]
+write_mission_stats_files = true
 
-		--[[The host's multiplayer name.  Only matters if you also specify a UCID.  The name must be quotes, like this:
-		host_name = "Speed"
-		]]
-		host_name = nil
-		
-	--[[You can tell Slmod to use an alternate file directory to record global SlmodStats in here.  Otherwise, it will default
-	to \Saved Games\DCS\Slmod\SlmodStats.lua.  Most useful for sharing stats with other computers/servers.]]
-	stats_dir = nil
-    
-    --[[When displaying detailed stats the list for guns can be simplified. If this is set to true then all guns are added into a "guns" statistic. If false each type
-        of gun is shown with its own stats. ]]
-    simple_gun_stats = false
-    
-	
+--[[If you don't want mission stats files saving in Saved Games/DCS/Slmod/Mission Stats, then specify an alternate file 
+directory here.]]
+mission_stats_files_dir = nil
+
+--[[In order for the host computer to get credit in the SlmodStats system, you must enter the UCID of the host computer below.
+The UCID must be in quotes, like this: 
+host_ucid = "a29fb043d814a012452f043dc"
+]]
+host_ucid = nil
+
+--[[The host's multiplayer name.  Only matters if you also specify a UCID.  The name must be quotes, like this:
+host_name = "Speed"
+]]
+host_name = nil
+
+--[[You can tell Slmod to use an alternate file directory to record global SlmodStats in here.  Otherwise, it will default
+to \Saved Games\DCS\Slmod\SlmodStats.lua.  Most useful for sharing stats with other computers/servers.]]
+stats_dir = nil
+
+--[[When displaying detailed stats the list for guns can be simplified. If this is set to true then all guns are added into a "guns" statistic. If false each type
+	of gun is shown with its own stats. ]]
+simple_gun_stats = false
+
+--[[Defines whether or not the main stats will also be saved in the json format.]]    
+save_json_stats	 = true
 ----------------------------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -553,17 +554,18 @@ pause_when_empty = true
 --Set to true to make Slmod output a chat log to \Saved Games\DCS\Slmod\Chat Logs\<Date, time stamp>.txt.
 chat_log = true
 
-	-- IF chat logging is set true, then enable this variable to also log team hitting events in the chat log.
-	-- SLMOD STATS MUST BE ENABLED FOR THIS OPTION TO WORK
-	log_team_hits = true
-	
-	-- IF chat logging is set true, then enable this variable to also log team killing events in the chat log.
-	-- SLMOD STATS MUST BE ENABLED FOR THIS OPTION TO WORK
-	log_team_kills = true
+-- IF chat logging is set true, then enable this variable to also log team hitting events in the chat log.
+-- SLMOD STATS MUST BE ENABLED FOR THIS OPTION TO WORK
+log_team_hits = true
 
-    -- If chat logging is set true, then this variable is used to filter out common serverside messages from chat. Currently messages SLMOD sends to clients is logged.
-    -- Chat log gets filled up with MOTD, chat commands, etc. If true only the important messages from slmod will be logged. If false all messages from server will be logged. 
-    log_only_important_server_messages = true
+-- IF chat logging is set true, then enable this variable to also log team killing events in the chat log.
+-- SLMOD STATS MUST BE ENABLED FOR THIS OPTION TO WORK
+log_team_kills = true
+
+-- If chat logging is set true, then this variable is used to filter out common serverside messages from chat. Currently messages SLMOD sends to clients is logged.
+-- Chat log gets filled up with MOTD, chat commands, etc. If true only the important messages from slmod will be logged. If false all messages from server will be logged. 
+log_only_important_server_messages = true
+
 --[[Enables server-wide chat messages that announce when players achieve PvP (player-vs-player) kills in SlmodStats.  
 Remember that PvP kills follow their own special rules- see the Slmod manual for more info.
 THIS OPTION REQUIRES THAT SLMODSTATS IS ENABLED!]]
@@ -610,15 +612,15 @@ Bienvenue sur le serveur de la VEAF.
 
 Attention: les joueurs au comportement toxique seront bannis !
 ]]
-		
-	-- The display time of the MOTD.  Seconds.
-	MOTD_display_time = 30
-		
-	-- The display mode of the MOTD.  The same options as for the PTS_list_display_mode (see below).
-	MOTD_display_mode = 'text'		
 	
-	-- In the MOTD, this setting controls whether or not the keystrokes to access the POS/PTS are given.
-	MOTD_show_POS_and_PTS = false
+-- The display time of the MOTD.  Seconds.
+MOTD_display_time = 30
+	
+-- The display mode of the MOTD.  The same options as for the PTS_list_display_mode (see below).
+MOTD_display_mode = 'text'		
+
+-- In the MOTD, this setting controls whether or not the keystrokes to access the POS/PTS are given.
+MOTD_show_POS_and_PTS = false
 	
 ----------------------------------------------------------------------------------------------------------------------
 

@@ -107,12 +107,17 @@ function slmod.getMissionUnitData()   --new import mission data function for Slm
 	return miz_units_str
 	
 end]==]
-
+    --local str, err = net.dostring_in('server', v7MissionUnitData_string)
 	local str, err = net.dostring_in('mission', v7MissionUnitData_string)
 	if not err then
 		slmod.error('failed to load slmod.getMissionUnitData into mission environment, reason: ' .. tostring(str))
 	end
 end
+
+--function slmod.create_getMissionUnitData2()
+
+
+--end
 
 --Import all the mission units to a global table 
 function slmod.makeMissionUnitData()
@@ -687,10 +692,12 @@ function slmod.create_getUnitXYZ()  -- function to return unit x,y,z data.
 	local getUnitXYZ_string = [[slmod = slmod or {}
 slmod.getUnitXYZ = function(rtId)
 	local unit = {id_ = rtId}
-	if Unit.isExist(unit) and Unit.isActive(unit) then
-		local pos = Unit.getPosition(unit).p
-		return table.concat({pos.x, ' ', pos.y, ' ', pos.z}) 
-	end
+    if unit then
+        if Unit.isExist(unit) and Unit.isActive(unit) then
+            local pos = Unit.getPosition(unit).p
+            return table.concat({pos.x, ' ', pos.y, ' ', pos.z}) 
+        end
+    end
 end]]
 	net.dostring_in('server', getUnitXYZ_string)
 end
@@ -709,7 +716,7 @@ function slmod.getUnitXYZ(rtId)
 			end
 		end
 	elseif slmod.config.export_world_objs and not err then
-		slmod.info('Error trying to do slmod.getUnitXYZ: ' .. tostring(str))
+		slmod.info('Error trying to do slmod.getUnitXYZ: ' .. rtId .. ' : error' ..tostring(str))
 	end
 end
 
@@ -731,16 +738,13 @@ function slmod.updateActiveUnits()  -- the coroutine to update active units tabl
 		end
 		
 		for unitInd = 1, #slmod.activeUnitsBase do
-			local unit = slmod.activeUnitsBase[unitInd]
-
+            local unit = slmod.activeUnitsBase[unitInd]
 			local rtId = DCS.getUnitProperty(unit.unitId, 1)
 			if rtId then
-				local x, y, z = slmod.getUnitXYZ(rtId)
-				
+                local x, y, z = slmod.getUnitXYZ(rtId)
 				if x then -- x, y, and z must exist, so unit is alive and active.
-					local activeUnit = slmod.deepcopy(unit)
-					newActiveUnits[tonumber(rtId)] = activeUnit
-					newActiveUnitsByName[unit.name] = activeUnit
+                    local activeUnit = slmod.deepcopy(unit)
+
 					activeUnit.id = tonumber(rtId) -- I do believe it is a number, but it might be a string...
 					activeUnit.x = x
 					activeUnit.y = y
@@ -748,7 +752,8 @@ function slmod.updateActiveUnits()  -- the coroutine to update active units tabl
 					if activeUnit.skill == 'Client' or activeUnit.skill == 'Player' then
 						activeUnit.mpname = DCS.getUnitProperty(unit.unitId, 14)
 					end
-					
+                    newActiveUnits[tonumber(rtId)] = activeUnit
+					newActiveUnitsByName[unit.name] = activeUnit
 				end
 			end
 			
@@ -976,6 +981,7 @@ function slmod.makeUnitCategories()
 	slmod.catsByUnitType = {}
 	for unitTypeName, unitData in pairs(slmod.unitAttributes) do
         -- Ground Units
+        --slmod.info(unitTypeName)
 		if slmod.unitHasAttribute(unitTypeName, "Ground Units") or slmod.unitHasAttribute(unitTypeName, "Air Defence") then  -- only do ground units!
 			if slmod.unitHasAttribute(unitTypeName, "SAM") or slmod.unitHasAttribute(unitTypeName, "SAM LL") or slmod.unitHasAttribute(unitTypeName, "SR SAM") or slmod.unitHasAttribute(unitTypeName, "MR SAM") or slmod.unitHasAttribute(unitTypeName, "LR SAM") or slmod.unitHasAttribute(unitTypeName, "SAM CC") then
 				slmod.unitCategories['Ground Units']['SAM'][unitTypeName] = true
@@ -1097,6 +1103,12 @@ function slmod.makeUnitCategories()
 		end
 		
 	end
+    -- Hard-code attributes in that may be missed due to Dedicated Server Bug. 
+    if not slmod.catsByUnitType['TF-51D'] then
+        slmod.unitCategories['Planes']['Fighters']['TF-51D'] = true
+        slmod.catsByUnitType['TF-51D'] = {'Planes', 'Fighters'}
+    end
+    
 end
 
 slmod.info('SlmodUnits.lua loaded.')

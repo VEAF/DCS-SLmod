@@ -114,6 +114,10 @@ do
 	sandbox.slmod['weapons_impacting_in_moving_zones_net'] = slmod.weapons_impacting_in_moving_zones_net
 	sandbox.slmod['weapons_in_zones_net'] = slmod.weapons_in_zones_net
 	sandbox.slmod['weapons_in_moving_zones_net'] = slmod.weapons_in_moving_zones_net
+    
+    sandbox.slmod['custom_stats_net'] = slmod.custom_stats_net
+    sandbox.slmod['set_campaign_net'] = slmod.set_campaign_net
+    sandbox.slmod['mission_admin_action'] = slmod.mission_admin_action
 	
 	--creating slmod.clients and banning code.
 
@@ -258,8 +262,7 @@ end
 			if slmod.mission_started == true then
 				slmod.reset()
 				slmod.mission_started = false
-				slmod.importMissionZones()
-				slmod.makeMissionUnitData()
+
 				if slmod.config.debugger then
 					slmod.runSlmodDebugger()
 				end
@@ -513,7 +516,7 @@ end
 function slmodCall.onPlayerChangeSlot(id)
 	--net.log('on change slot')
 	if slmod.stats.onSetUnit then
-			slmod.stats.onSetUnit(id)
+		slmod.stats.onSetUnit(id)
 	end
 
     if SlmodMOTDMenu then  -- right now, simple MOTD- send it to player when they select unit.

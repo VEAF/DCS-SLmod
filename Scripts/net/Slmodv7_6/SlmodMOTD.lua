@@ -75,9 +75,28 @@ if slmod.config.MOTD_enabled then
 					titleTbl[#titleTbl + 1] = 'Stats tracking is disabled; to view player stats, say "-stats" in chat.\n'
 					--title = title .. 'This server currently has stats tracking with SlmodStats disabled.  If you are an admin, you may re-enable it with the Admin menu.\n'
 				end
-						
-				if slmod.config.autoAdmin.autoBanEnabled or slmod.config.autoAdmin.autoKickEnabled then
-					local offCounter = 0  -- offense counter.
+				if offCounter ~= 0 and slmod.config.autoAdmin.MOTD_show_settings then
+					titleTbl[#titleTbl + 1] = 'WARNING! '
+					--title = title .. 'WARNING! '
+					if slmod.config.autoAdmin.autoKickEnabled then
+						titleTbl[#titleTbl + 1] = 'Auto Kick '
+						--title = title .. 'Auto Kick '
+						if slmod.config.autoAdmin.autoBanEnabled then
+							titleTbl[#titleTbl + 1] = 'and '
+							--title = title .. 'and '
+						end
+					end
+					if slmod.config.autoAdmin.autoBanEnabled then
+						titleTbl[#titleTbl + 1] = 'Auto Ban '
+						--title = title .. 'Auto Ban '
+					end
+					if slmod.config.autoAdmin.autoBanEnabled and slmod.config.autoAdmin.autoKickEnabled then
+						titleTbl[#titleTbl + 1] = 'are enabled. Actionable offenses include: '
+						--title = title .. 'are enabled. Actionable offenses include: '
+					else
+						titleTbl[#titleTbl + 1] = 'is enabled. Actionable offenses include: '
+						--title = title .. 'is enabled. Actionable offenses include: '
+					end
 					if slmod.config.autoAdmin.teamHit.enabled then
 						offCounter = offCounter + 1
 					end
@@ -145,8 +164,8 @@ if slmod.config.MOTD_enabled then
 					end
 					
 				end
-			
-				if slmod.config.coord_converter then
+				
+				if slmod.config.coord_converter and slmod.config.MOTD_show_coord then
 					titleTbl[#titleTbl + 1] = '\nSlmod Coordinate Converter is enabled. For instructions on how to use it, say "-conv" in chat.'
 					--title = title .. 'This server has the Slmod Coordinate Converter enabled. For instructions on how to use it, say "-conv" in chat.\n'
 				end
@@ -156,26 +175,24 @@ if slmod.config.MOTD_enabled then
 					titleTbl[#titleTbl + 1] = '\nSome missions may make use of the Parallel Options System. To see any options, say "-sol" in chat.'
 					--title = title .. 'Some missions may make use of the Parallel Options System. To see any options, say "-sol" in chat.'
 				end
-			end
-
-			if slmod.config.admin_tools and SlmodAdminMenu and clientId and slmod.clientInScope(clientId, SlmodAdminMenu:getScope()) then
-				titleTbl[#titleTbl + 1] = '\nYou are registered as a server admin.  Say "-admin" in chat to access the Admin menu.'
-				--title =  title ..'You are registered as a server admin.  Say "-admin" in chat to access the Admin menu.'
-			end
+				if slmod.config.admin_tools and SlmodAdminMenu and clientId and slmod.clientInScope(clientId, SlmodAdminMenu:getScope()) then
+					titleTbl[#titleTbl + 1] = '\nYou are registered as a server admin.  Say "-admin" in chat to access the Admin menu.'
+					--title =  title ..'You are registered as a server admin.  Say "-admin" in chat to access the Admin menu.'
+				end
 			
+				titleTbl[#titleTbl + 1] = '\n(The default US keystroke for chat in your module is: Tab.)'
 
-            titleTbl[#titleTbl + 1] = '\n(The default US keystroke for chat in your module is: Tab.)'
-
-            if slmod.config.autoAdmin.showPenaltyInMODT and slmod.clients[clientId] then
-                local pp = slmod.getUserScore(slmod.clients[clientId].ucid) or 0
-                if pp == 0 then
-                    titleTbl[#titleTbl + 1] ='\n You have no active penalties!'
-                else
-                    titleTbl[#titleTbl + 1] = '\n You currently have: '
-                    titleTbl[#titleTbl + 1] = string.format("%.2f", tostring(pp))
-                    titleTbl[#titleTbl + 1] = ' penalty points.'
-                end
-            end
+				if slmod.config.autoAdmin.showPenaltyInMODT and slmod.clients[clientId] then
+						local pp = slmod.getUserScore(slmod.clients[clientId].ucid) or 0
+						if pp == 0 then
+								titleTbl[#titleTbl + 1] ='\n You have no active penalties!'
+						else
+								titleTbl[#titleTbl + 1] = '\n You currently have: '
+								titleTbl[#titleTbl + 1] = string.format("%.2f", tostring(pp))
+								titleTbl[#titleTbl + 1] = ' penalty points.'
+						end
+				end
+			end
 			
 			self.options.title = table.concat(titleTbl) -- kinda a hax also- there is only one motd menu for everyone, but I change the title based on the last time it was requested...
 			

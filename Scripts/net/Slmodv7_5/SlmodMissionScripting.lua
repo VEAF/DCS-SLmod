@@ -13,8 +13,11 @@ end
 --You can remove the code below and make availble these functions at your own risk.
 
 local function sanitizeModule(name)
-	_G[name] = nil
-	package.loaded[name] = nil
+	local veafName = "veafSanitized_"..name
+	_G[veafName] = _G[name]
+	package.loaded[veafName] = package.loaded[name]
+	--_G[name] = nil
+	--package.loaded[name] = nil
 end
 -------------------------------------------------------------------------------------------------------
 -- Slmod begins here.
